@@ -1,4 +1,4 @@
-let app=document.getElementById("app")
+let app = document.getElementById("app")
 
 function loginPage(){
 
@@ -33,14 +33,10 @@ function login(){
 let u=document.getElementById("user").value
 let p=document.getElementById("pass").value
 
-if(u=="admin" && p=="12345"){
-
+if(u==="admin" && p==="12345"){
 dashboard()
-
 }else{
-
 alert("Login Salah")
-
 }
 
 }
@@ -74,8 +70,8 @@ app.innerHTML=`
 
 <div class="grid">
 
-<div class="icon" onclick="nasabah()">Nasabah</div>
-<div class="icon" onclick="gadai()">Gadai</div>
+<div class="icon" onclick="nasabahPage()">Nasabah</div>
+<div class="icon" onclick="gadaiPage()">Gadai</div>
 
 </div>
 
@@ -86,8 +82,8 @@ app.innerHTML=`
 <div class="bottomnav">
 
 <div onclick="dashboard()">Home</div>
-<div onclick="nasabah()">Nasabah</div>
-<div onclick="gadai()">Gadai</div>
+<div onclick="nasabahPage()">Nasabah</div>
+<div onclick="gadaiPage()">Gadai</div>
 
 </div>
 
@@ -95,7 +91,7 @@ app.innerHTML=`
 
 }
 
-function nasabah(){
+function nasabahPage(){
 
 app.innerHTML=`
 
@@ -156,7 +152,7 @@ data.push({nama,ktp,hp,alamat})
 
 localStorage.setItem("nasabah",JSON.stringify(data))
 
-nasabah()
+nasabahPage()
 
 }
 
@@ -169,15 +165,11 @@ let html=""
 data.forEach(n=>{
 
 html+=`
-
 <tr>
-
 <td>${n.nama}</td>
 <td>${n.ktp}</td>
 <td>${n.hp}</td>
-
 </tr>
-
 `
 
 })
@@ -186,7 +178,7 @@ document.getElementById("listNasabah").innerHTML=html
 
 }
 
-function gadai(){
+function gadaiPage(){
 
 app.innerHTML=`
 
@@ -248,16 +240,18 @@ tampilGadai()
 
 function hitung(){
 
-let pinjaman=document.getElementById("pinjaman").value
+let pinjaman=parseInt(document.getElementById("pinjaman").value)
+
+if(!pinjaman){
+alert("Masukkan nilai pinjaman")
+return
+}
 
 let bunga=pinjaman*0.10
-
-let total=parseInt(pinjaman)+parseInt(bunga)
+let total=pinjaman+bunga
 
 document.getElementById("hasil").innerHTML=
-
-"Bunga 10% : "+bunga+
-"<br>Total Bayar : "+total
+"Bunga 10% : "+bunga+"<br>Total Bayar : "+total
 
 }
 
@@ -267,10 +261,10 @@ let nama=document.getElementById("nama").value
 let jenis=document.getElementById("jenis").value
 let merk=document.getElementById("merk").value
 let plat=document.getElementById("plat").value
-let pinjaman=document.getElementById("pinjaman").value
+let pinjaman=parseInt(document.getElementById("pinjaman").value)
 
 let bunga=pinjaman*0.10
-let total=parseInt(pinjaman)+parseInt(bunga)
+let total=pinjaman+bunga
 
 let data=JSON.parse(localStorage.getItem("gadai")) || []
 
@@ -278,7 +272,7 @@ data.push({nama,jenis,merk,plat,pinjaman,total})
 
 localStorage.setItem("gadai",JSON.stringify(data))
 
-gadai()
+gadaiPage()
 
 }
 
@@ -291,16 +285,12 @@ let html=""
 data.forEach(g=>{
 
 html+=`
-
 <tr>
-
 <td>${g.nama}</td>
 <td>${g.jenis} ${g.merk}</td>
 <td>${g.pinjaman}</td>
 <td>${g.total}</td>
-
 </tr>
-
 `
 
 })
