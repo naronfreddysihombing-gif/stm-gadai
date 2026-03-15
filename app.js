@@ -1,5 +1,13 @@
 let app = document.getElementById("app")
 
+function formatRupiah(angka){
+
+let number = angka.replace(/\D/g,'')
+
+return number.replace(/\B(?=(\d{3})+(?!\d))/g,".")
+
+}
+
 function loginPage(){
 
 app.innerHTML=`
@@ -201,7 +209,8 @@ app.innerHTML=`
 <input id="merk" placeholder="Merk Kendaraan">
 <input id="plat" placeholder="Nomor Polisi">
 
-<input id="pinjaman" placeholder="Nilai Pinjaman">
+<input id="pinjaman" placeholder="Nilai Pinjaman"
+onkeyup="this.value=formatRupiah(this.value)">
 
 <button onclick="hitung()">Hitung Pinjaman</button>
 
@@ -240,7 +249,9 @@ tampilGadai()
 
 function hitung(){
 
-let pinjaman=parseInt(document.getElementById("pinjaman").value)
+let pinjaman=document.getElementById("pinjaman").value.replace(/\./g,"")
+
+pinjaman=parseInt(pinjaman)
 
 if(!pinjaman){
 alert("Masukkan nilai pinjaman")
@@ -251,7 +262,9 @@ let bunga=pinjaman*0.10
 let total=pinjaman+bunga
 
 document.getElementById("hasil").innerHTML=
-"Bunga 10% : "+bunga+"<br>Total Bayar : "+total
+
+"Bunga 10% : "+formatRupiah(bunga.toString())+
+"<br>Total Bayar : "+formatRupiah(total.toString())
 
 }
 
@@ -261,7 +274,10 @@ let nama=document.getElementById("nama").value
 let jenis=document.getElementById("jenis").value
 let merk=document.getElementById("merk").value
 let plat=document.getElementById("plat").value
-let pinjaman=parseInt(document.getElementById("pinjaman").value)
+
+let pinjaman=document.getElementById("pinjaman").value.replace(/\./g,"")
+
+pinjaman=parseInt(pinjaman)
 
 let bunga=pinjaman*0.10
 let total=pinjaman+bunga
@@ -288,8 +304,8 @@ html+=`
 <tr>
 <td>${g.nama}</td>
 <td>${g.jenis} ${g.merk}</td>
-<td>${g.pinjaman}</td>
-<td>${g.total}</td>
+<td>${formatRupiah(g.pinjaman.toString())}</td>
+<td>${formatRupiah(g.total.toString())}</td>
 </tr>
 `
 
