@@ -5,10 +5,8 @@ function loginPage(){
 app.innerHTML=`
 
 <header>
-
 <h2>STM GADAI</h2>
 <p>Sepakat Tolong Menolong</p>
-
 </header>
 
 <div class="container">
@@ -55,10 +53,8 @@ let gadai=JSON.parse(localStorage.getItem("gadai")) || []
 app.innerHTML=`
 
 <header>
-
 <h2>STM GADAI</h2>
-<p>Dashboard Kendaraan</p>
-
+<p>Dashboard</p>
 </header>
 
 <div class="container">
@@ -74,14 +70,12 @@ app.innerHTML=`
 
 <div class="card">
 
-<h3>Menu Utama</h3>
+<h3>Menu</h3>
 
 <div class="grid">
 
 <div class="icon" onclick="nasabah()">Nasabah</div>
 <div class="icon" onclick="gadai()">Gadai</div>
-<div class="icon">Pembayaran</div>
-<div class="icon">Laporan</div>
 
 </div>
 
@@ -94,7 +88,6 @@ app.innerHTML=`
 <div onclick="dashboard()">Home</div>
 <div onclick="nasabah()">Nasabah</div>
 <div onclick="gadai()">Gadai</div>
-<div>Laporan</div>
 
 </div>
 
@@ -108,6 +101,7 @@ app.innerHTML=`
 
 <header>
 <h2>Data Nasabah</h2>
+<button onclick="dashboard()">← Kembali</button>
 </header>
 
 <div class="container">
@@ -175,11 +169,15 @@ let html=""
 data.forEach(n=>{
 
 html+=`
+
 <tr>
+
 <td>${n.nama}</td>
 <td>${n.ktp}</td>
 <td>${n.hp}</td>
+
 </tr>
+
 `
 
 })
@@ -194,6 +192,7 @@ app.innerHTML=`
 
 <header>
 <h2>Gadai Kendaraan</h2>
+<button onclick="dashboard()">← Kembali</button>
 </header>
 
 <div class="container">
@@ -201,19 +200,64 @@ app.innerHTML=`
 <div class="card">
 
 <input id="nama" placeholder="Nama Nasabah">
-<input id="jenis" placeholder="Jenis Kendaraan (Motor/Mobil)">
+
+<select id="jenis">
+<option>Motor</option>
+<option>Mobil</option>
+</select>
+
 <input id="merk" placeholder="Merk Kendaraan">
 <input id="plat" placeholder="Nomor Polisi">
 
 <input id="pinjaman" placeholder="Nilai Pinjaman">
 
+<button onclick="hitung()">Hitung Pinjaman</button>
+
+<p id="hasil"></p>
+
 <button onclick="simpanGadai()">Simpan Gadai</button>
+
+</div>
+
+<div class="card">
+
+<h3>Gadai Aktif</h3>
+
+<table width="100%" border="1">
+
+<tr>
+<th>Nama</th>
+<th>Kendaraan</th>
+<th>Pinjaman</th>
+<th>Total</th>
+</tr>
+
+<tbody id="listGadai"></tbody>
+
+</table>
 
 </div>
 
 </div>
 
 `
+
+tampilGadai()
+
+}
+
+function hitung(){
+
+let pinjaman=document.getElementById("pinjaman").value
+
+let bunga=pinjaman*0.10
+
+let total=parseInt(pinjaman)+parseInt(bunga)
+
+document.getElementById("hasil").innerHTML=
+
+"Bunga 10% : "+bunga+
+"<br>Total Bayar : "+total
 
 }
 
@@ -225,13 +269,43 @@ let merk=document.getElementById("merk").value
 let plat=document.getElementById("plat").value
 let pinjaman=document.getElementById("pinjaman").value
 
+let bunga=pinjaman*0.10
+let total=parseInt(pinjaman)+parseInt(bunga)
+
 let data=JSON.parse(localStorage.getItem("gadai")) || []
 
-data.push({nama,jenis,merk,plat,pinjaman})
+data.push({nama,jenis,merk,plat,pinjaman,total})
 
 localStorage.setItem("gadai",JSON.stringify(data))
 
-dashboard()
+gadai()
+
+}
+
+function tampilGadai(){
+
+let data=JSON.parse(localStorage.getItem("gadai")) || []
+
+let html=""
+
+data.forEach(g=>{
+
+html+=`
+
+<tr>
+
+<td>${g.nama}</td>
+<td>${g.jenis} ${g.merk}</td>
+<td>${g.pinjaman}</td>
+<td>${g.total}</td>
+
+</tr>
+
+`
+
+})
+
+document.getElementById("listGadai").innerHTML=html
 
 }
 
